@@ -103,38 +103,38 @@ func NewInput(s string, isMultiLine bool) *Input {
 // capturing events, the Input field also publishes its own event stream under the /input/kbd path.
 func (i *Input) StartCapture() {
 	i.IsCapturing = true
-	Handle("/sys/kbd", func(e Event) {
-		if i.IsCapturing {
-			key := e.Data.(EvtKbd).KeyStr
-
-			switch key {
-			case "<up>":
-				i.moveUp()
-			case "<down>":
-				i.moveDown()
-			case "<left>":
-				i.moveLeft()
-			case "<right>":
-				i.moveRight()
-			case "C-8":
-				i.backspace()
-			default:
-				// If it's a CTRL something we don't handle then just ignore it
-				if strings.HasPrefix(key, "C-") {
-					break
-				}
-				newString := i.getCharString(key)
-				i.addString(newString)
-			}
-			if i.Name == "" {
-				SendCustomEvt("/input/kbd", i.getInputEvt(key))
-			} else {
-				SendCustomEvt("/input/"+i.Name+"/kbd", i.getInputEvt(key))
-			}
-
-			Render(i)
-		}
-	})
+	// i.Handle("/sys/kbd", func(e Event) {
+	// 	if i.IsCapturing {
+	// 		key := e.ID
+	//
+	// 		switch key {
+	// 		case "<up>":
+	// 			i.moveUp()
+	// 		case "<down>":
+	// 			i.moveDown()
+	// 		case "<left>":
+	// 			i.moveLeft()
+	// 		case "<right>":
+	// 			i.moveRight()
+	// 		case "C-8":
+	// 			i.backspace()
+	// 		default:
+	// 			// If it's a CTRL something we don't handle then just ignore it
+	// 			if strings.HasPrefix(key, "C-") {
+	// 				break
+	// 			}
+	// 			newString := i.getCharString(key)
+	// 			i.addString(newString)
+	// 		}
+	// 		// if i.Name == "" {
+	// 		// 	SendCustomEvt("/input/kbd", i.getInputEvt(key))
+	// 		// } else {
+	// 		// 	SendCustomEvt("/input/"+i.Name+"/kbd", i.getInputEvt(key))
+	// 		// }
+	//
+	// 		Render(i)
+	// 	}
+	// })
 }
 
 // StopCapture tells the Input field to stop accepting events from the /sys/kbd stream
