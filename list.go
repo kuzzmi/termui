@@ -14,7 +14,7 @@ import "strings"
   strs := []string{
 		"[0] github.com/gizak/termui",
 		"[1] editbox.go",
-		"[2] iterrupt.go",
+		"[2] interrupt.go",
 		"[3] keyboard.go",
 		"[4] output.go",
 		"[5] random_out.go",
@@ -39,11 +39,12 @@ type List struct {
 
 // NewList returns a new *List with current theme.
 func NewList() *List {
-	l := &List{Block: *NewBlock()}
-	l.Overflow = "hidden"
-	l.ItemFgColor = ThemeAttr("list.item.fg")
-	l.ItemBgColor = ThemeAttr("list.item.bg")
-	return l
+	return &List{
+		Block:       *NewBlock(),
+		Overflow:    "hidden",
+		ItemFgColor: ThemeAttr("list.item.fg"),
+		ItemBgColor: ThemeAttr("list.item.bg"),
+	}
 }
 
 // Buffer implements Bufferer interface.
@@ -85,5 +86,6 @@ func (l *List) Buffer() Buffer {
 			}
 		}
 	}
+
 	return buf
 }

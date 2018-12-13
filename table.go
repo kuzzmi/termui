@@ -51,11 +51,12 @@ type Table struct {
 
 // NewTable returns a new Table instance
 func NewTable() *Table {
-	table := &Table{Block: *NewBlock()}
-	table.FgColor = ColorWhite
-	table.BgColor = ColorDefault
-	table.Separator = true
-	return table
+	return &Table{
+		Block:     *NewBlock(),
+		FgColor:   ColorWhite,
+		BgColor:   ColorDefault,
+		Separator: true,
+	}
 }
 
 // CellsWidth calculates the width of a cell array and returns an int
@@ -176,7 +177,7 @@ func (table *Table) Buffer() Buffer {
 		if table.Separator {
 			border := DefaultTxBuilder.Build(strings.Repeat("─", table.Width-2), table.FgColor, table.BgColor)
 			for i, cell := range border {
-				buffer.Set(i+1, pointerY+1, cell)
+				buffer.Set(table.innerArea.Min.X+i, pointerY+1, cell)
 			}
 		}
 	}
